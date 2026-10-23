@@ -1,0 +1,8 @@
+/build
+/.vscode
+
+# installed dependencies
+/vcpkg_installed
+
+# log files
+/*.log

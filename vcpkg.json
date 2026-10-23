@@ -1,0 +1,14 @@
+{
+  "name": "fuel-management-system",
+  "version-string": "1.0.0",
+  "dependencies": [
+    "spdlog"
+  ],
+  "builtin-baseline": "e456309491fd875487bf02b8a0dca76c1b1b00cc",
+  "overrides": [
+    {
+      "name": "spdlog",
+      "version": "1.15.3"
+    }
+  ]
+}
