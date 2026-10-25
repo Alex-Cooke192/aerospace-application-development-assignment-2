@@ -10,7 +10,7 @@ include(FetchContent)
 FetchContent_Declare(
     spdlog
     GIT_REPOSITORY https://github.com/gabime/spdlog.git
-    GIT_TAG v1.15.3
+    GIT_TAG v1.17.0
 )
 
 FetchContent_Declare(
@@ -72,3 +72,14 @@ target_link_libraries(afrm_unit_tests PRIVATE GTest::gtest_main spdlog::spdlog)
 include(GoogleTest)
 
 gtest_discover_tests(afrm_unit_tests)
+
+target_compile_options(afrm_unit_tests PRIVATE
+    -O0
+    -g
+    -fprofile-instr-generate
+    -fcoverage-mapping
+)
+
+target_link_options(afrm_unit_tests PRIVATE
+    -fprofile-instr-generate
+)

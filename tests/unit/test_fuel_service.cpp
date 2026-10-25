@@ -13,6 +13,16 @@ AircraftConfiguration TestConfig() {
 }
 }
 
+TEST(FuelServiceTest, GetterAndSetterMethodsFunctionCorrectly) {
+    EventBus bus;
+    FuelService service(bus, TestConfig());
+    bool flag = service.GetFuelRangeFlag();
+    service.SetFuelRangeFlag(true);
+    bool secondFlag = service.GetFuelRangeFlag();
+    EXPECT_FALSE(flag);
+    EXPECT_TRUE(secondFlag);
+}
+
 TEST(FuelServiceTest, AirSpeedChangePublishesOldAndNewValues) {
     EventBus bus;
     FuelService service(bus, TestConfig());
@@ -57,6 +67,39 @@ TEST(FuelServiceTest, FuelLevelChangePublishesOriginalAndNewLevels) {
     EXPECT_FLOAT_EQ(after, 75.0f);
 }
 
+TEST(FuelServiceTest, UnchangedFuelLevelDoesNotRepublish) {
+    EventBus bus;
+    FuelService service(bus, TestConfig());
+    int calls = 0;
+    bus.subscribe<FuelLevelChanged>([&](const auto&) { ++calls; });
+    service.CheckFuelLevelChanged(150.0f);
+    service.CheckFuelLevelChanged(150.0f);
+    EXPECT_EQ(calls, 1);
+}
+
+TEST(FuelServiceTest, FuelConsumptionChangedPublishedOriginalAndNewValues) {
+    EventBus bus;
+    FuelService service(bus, TestConfig());
+    int calls = 0;
+    bus.subscribe<FuelConsumptionChanged>([&](const auto&) { ++calls; });
+    service.CheckFuelConsumptionChanged(0.03f);
+    service.CheckFuelConsumptionChanged(0.03f);
+    EXPECT_EQ(calls, 1);
+}
+
+TEST(FuelServiceTest, FuelRangeFlagFalseDoesNotTriggerFuelRangeCalculation) {
+    EventBus bus; 
+    FuelService service(bus, TestConfig());
+    int calls = 0;
+    bus.subscribe<FuelRangeChanged>([&](const auto&) { ++calls; });
+    bool flag = service.GetFuelRangeFlag(); // false
+    service.CheckFuelLevelChanged(150.0f); // This should trigger a publish of the event
+    service.SetFuelRangeFlag(true); 
+    service.CheckFuelLevelChanged(200.0f); // flag is TRUE so shouldn't trigger a publish
+    service.SetFuelRangeFlag(false);
+    EXPECT_EQ(calls, 1);
+}
+
 TEST(FuelServiceTest, RaisesLowWarningBelowThreshold) {
     EventBus bus;
     FuelService service(bus, TestConfig());
@@ -77,7 +120,19 @@ TEST(FuelServiceTest, DoesNotRaiseLowWarningAtThreshold) {
     EXPECT_EQ(warnings, 0); // Current production comparison is strictly '<'.
 }
 
-TEST(FuelServiceTest, RaisesCriticalWarningBelowCriticalThreshold) {
+TEST(FuelServiceTest, TransitionsFromLowWarningToCriticalWarningBelowCriticalFuelThreshold) {
+    EventBus bus;
+    FuelService service(bus, TestConfig());
+    service.CheckFuelConsumptionChanged(2.0f);
+    int warnings = 0;
+    bus.subscribe<LowFuelWarningRaised>([&](const auto&) { ++warnings; });
+    bus.subscribe<CriticalFuelWarningRaised>([&](const auto&) { ++warnings; });
+    service.CheckFuelLevelChanged(20.0f); // Raise low fuel warning
+    service.CheckFuelLevelChanged(5.0f); // Raise critical fuel warning
+    EXPECT_EQ(warnings, 2);
+}
+
+TEST(FuelServiceTest, RaisesCriticalWarningBelowCriticalFuelThreshold) {
     EventBus bus;
     FuelService service(bus, TestConfig());
     service.CheckFuelConsumptionChanged(2.0f);
