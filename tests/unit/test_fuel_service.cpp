@@ -87,7 +87,7 @@ TEST(FuelServiceTest, FuelConsumptionChangedPublishedOriginalAndNewValues) {
     EXPECT_EQ(calls, 1);
 }
 
-TEST(FuelServiceTest, FuelRangeFlagFalseDoesNotTriggerFuelRangeCalculation) {
+TEST(FuelServiceTest, FuelRangeFlagTrueDoesNotTriggerFuelRangeCalculation) {
     EventBus bus; 
     FuelService service(bus, TestConfig());
     int calls = 0;
@@ -110,26 +110,32 @@ TEST(FuelServiceTest, RaisesLowWarningBelowThreshold) {
     EXPECT_EQ(warnings, 1);
 }
 
-TEST(FuelServiceTest, DoesNotRaiseLowWarningAtThreshold) {
+// EDGE CASE
+TEST(FuelServiceTest, RaisesLowWarningAtThreshold) {
     EventBus bus;
     FuelService service(bus, TestConfig());
     service.CheckFuelConsumptionChanged(2.0f);
     int warnings = 0;
     bus.subscribe<LowFuelWarningRaised>([&](const auto&) { ++warnings; });
-    service.CheckFuelLevelChanged(20.0f);
-    EXPECT_EQ(warnings, 0); // Current production comparison is strictly '<'.
+    service.CheckFuelLevelChanged(TestConfig().fuelThresholds.low_fuel_warning_threshold);
+    EXPECT_EQ(warnings, 1); // Current production comparison is strictly '<'.
 }
 
 TEST(FuelServiceTest, TransitionsFromLowWarningToCriticalWarningBelowCriticalFuelThreshold) {
     EventBus bus;
     FuelService service(bus, TestConfig());
     service.CheckFuelConsumptionChanged(2.0f);
-    int warnings = 0;
-    bus.subscribe<LowFuelWarningRaised>([&](const auto&) { ++warnings; });
-    bus.subscribe<CriticalFuelWarningRaised>([&](const auto&) { ++warnings; });
-    service.CheckFuelLevelChanged(20.0f); // Raise low fuel warning
+    int lowWarnings = 0;
+    int criticalWarnings = 0;
+    bus.subscribe<LowFuelWarningRaised>([&](const auto&) { ++lowWarnings; });
+    bus.subscribe<CriticalFuelWarningRaised>([&](const auto&) { ++criticalWarnings; });
+    service.CheckFuelLevelChanged(15.0f); // Raise low fuel warning
+
+    EXPECT_EQ(lowWarnings, 1); 
+    EXPECT_EQ(criticalWarnings, 0); 
     service.CheckFuelLevelChanged(5.0f); // Raise critical fuel warning
-    EXPECT_EQ(warnings, 2);
+    EXPECT_EQ(lowWarnings, 1);
+    EXPECT_EQ(criticalWarnings, 1);
 }
 
 TEST(FuelServiceTest, RaisesCriticalWarningBelowCriticalFuelThreshold) {
@@ -142,14 +148,15 @@ TEST(FuelServiceTest, RaisesCriticalWarningBelowCriticalFuelThreshold) {
     EXPECT_EQ(warnings, 1);
 }
 
-TEST(FuelServiceTest, DoesNotRaiseCriticalWarningAtThreshold) {
+// EDGE CASE
+TEST(FuelServiceTest, RaisesCriticalWarningAtThreshold) {
     EventBus bus;
     FuelService service(bus, TestConfig());
     service.CheckFuelConsumptionChanged(2.0f);
     int warnings = 0;
     bus.subscribe<CriticalFuelWarningRaised>([&](const auto&) { ++warnings; });
-    service.CheckFuelLevelChanged(10.0f);
-    EXPECT_EQ(warnings, 0);
+    service.CheckFuelLevelChanged(TestConfig().fuelThresholds.critical_fuel_warning_threshold);
+    EXPECT_EQ(warnings, 1);
 }
 
 TEST(FuelServiceTest, ClearsLowWarningWhenFuelRecovers) {
