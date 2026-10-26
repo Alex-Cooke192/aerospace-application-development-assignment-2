@@ -37,6 +37,10 @@ add_executable(afrm_tests
     tests/unit/test_event_bus.cpp
     tests/unit/test_fuel_service.cpp
     tests/unit/test_fuel_display_service.cpp
+    tests/integration/test_fuelService_to_fuelDisplay.cpp
+    tests/integration/test_sensor_to_fuelService.cpp
+    src/sitl-sensors/air-speed-sensor.cpp
+    src/sitl-sensors/fuel-sensor.cpp
     src/fuel/fuel-service.cpp
     src/fuel-display/fuel-display-service.cpp
     src/event-bus/event-bus.cpp
