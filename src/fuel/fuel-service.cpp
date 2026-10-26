@@ -46,7 +46,7 @@ void FuelService::CheckFuelLevelChanged(float New_Fuel_Level) {
         } else if (this->fuelState == FuelState::WARN) {
             CheckLowFuelWarningCleared();
             CheckCriticalFuelWarning();
-        } else if (this->fuelState == FuelState::CRITICAL) {
+        } else { // FuelState == CRITICAL
             CheckCriticalFuelWarningCleared();
         }
     }
@@ -131,7 +131,7 @@ void FuelService::ClearLowFuelWarning() {
 
 void FuelService::CheckLowFuelWarning() {
     if (this->fuelState == FuelState::NORMAL || this->fuelState == FuelState::CRITICAL) {
-        if (this->Fuel_Level < this->Low_Fuel_Warning_Threshold) {
+        if (this->Fuel_Level <= this->Low_Fuel_Warning_Threshold) {
             RaiseLowFuelWarning();
         }
     }
@@ -168,7 +168,7 @@ void FuelService::ClearCriticalFuelWarning() {
 
 void FuelService::CheckCriticalFuelWarning() {
     if (this->fuelState == FuelState::WARN || this->fuelState == FuelState::NORMAL) {
-        if (this->Fuel_Level < this->Critical_Fuel_Warning_Threshold) {
+        if (this->Fuel_Level <= this->Critical_Fuel_Warning_Threshold) {
             RaiseCriticalFuelWarning();
         }
     }

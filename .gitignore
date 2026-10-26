@@ -1,5 +1,12 @@
 /build
+/build-coverage
+/coverage-report
+/coverage-profiles
 /.vscode
+
+#coverage report profiles
+/*.profraw
+/*.profdata
 
 # installed dependencies
 /vcpkg_installed
