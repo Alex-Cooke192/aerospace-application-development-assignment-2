@@ -46,7 +46,7 @@ void FuelService::CheckFuelLevelChanged(float New_Fuel_Level) {
         } else if (this->fuelState == FuelState::WARN) {
             CheckLowFuelWarningCleared();
             CheckCriticalFuelWarning();
-        } else if (this->fuelState == FuelState::CRITICAL) {
+        } else { // FuelState == CRITICAL
             CheckCriticalFuelWarningCleared();
         }
     }

@@ -104,10 +104,33 @@ TEST(FuelServiceTest, RaisesLowWarningBelowThreshold) {
     EventBus bus;
     FuelService service(bus, TestConfig());
     service.CheckFuelConsumptionChanged(2.0f);
+    service.CheckFuelLevelChanged(50.0f);
     int warnings = 0;
     bus.subscribe<LowFuelWarningRaised>([&](const auto&) { ++warnings; });
     service.CheckFuelLevelChanged(15.0f);
     EXPECT_EQ(warnings, 1);
+}
+
+TEST(FuelServiceTest, RaisesLowWarningWhenTransitioningFromCriticalToLow) {
+    EventBus bus;
+    FuelService service(bus, TestConfig());
+    service.CheckFuelConsumptionChanged(2.0f);
+    service.CheckFuelLevelChanged(5.0f);
+    int warnings = 0;
+    bus.subscribe<LowFuelWarningRaised>([&](const auto&) { ++warnings; });
+    service.CheckLowFuelWarning();
+    EXPECT_EQ(warnings, 1); 
+}
+
+TEST(FuelServiceTest, DoesNotRaiseLowWarningWhenInLowFuelState) {
+    EventBus bus;
+    FuelService service(bus, TestConfig());
+    service.CheckFuelConsumptionChanged(2.0f);
+    service.CheckFuelLevelChanged(15.0f); 
+    int warnings = 0;
+    bus.subscribe<LowFuelWarningRaised>([&](const auto&) { ++warnings; });
+    service.CheckLowFuelWarning();
+    EXPECT_EQ(warnings, 0);
 }
 
 // EDGE CASE
@@ -144,6 +167,10 @@ TEST(FuelServiceTest, RaisesCriticalWarningBelowCriticalFuelThreshold) {
     service.CheckFuelConsumptionChanged(2.0f);
     int warnings = 0;
     bus.subscribe<CriticalFuelWarningRaised>([&](const auto&) { ++warnings; });
+    service.CheckFuelLevelChanged(50.0f);
+    EXPECT_EQ(warnings, 0);
+    service.CheckFuelLevelChanged(15.0f);
+    EXPECT_EQ(warnings, 0);
     service.CheckFuelLevelChanged(5.0f);
     EXPECT_EQ(warnings, 1);
 }
@@ -170,13 +197,58 @@ TEST(FuelServiceTest, ClearsLowWarningWhenFuelRecovers) {
     EXPECT_EQ(cleared, 1);
 }
 
-TEST(FuelServiceTest, ClearsCriticalWarningWhenFuelRecovers) {
+TEST(FuelServiceTest, DoesNotClearLowWarningWhenStateIsNotWarn) {
+    EventBus bus;
+    FuelService service(bus, TestConfig());
+    int cleared = 0;
+    bus.subscribe<LowFuelWarningCleared>([&](const auto&) { ++cleared; });
+    service.CheckFuelLevelChanged(50.0f);
+    service.CheckLowFuelWarningCleared(); 
+    EXPECT_EQ(cleared, 0); 
+}
+
+TEST(FuelServiceTest, TransitionsFromCriticalWarningToLowWarningWhenFuelRecoversBelowLowThreshold) {
+    EventBus bus;
+    FuelService service(bus, TestConfig());
+    service.CheckFuelConsumptionChanged(2.0f);
+    int lowCleared = 0;
+    int criticalCleared = 0;
+    bus.subscribe<CriticalFuelWarningCleared>([&](const auto&) { ++criticalCleared; });
+    bus.subscribe<LowFuelWarningCleared>([&](const auto&) { ++lowCleared; }); 
+    service.CheckFuelLevelChanged(5.0f);
+    service.CheckFuelLevelChanged(15.0f);
+    EXPECT_EQ(lowCleared, 0);
+    EXPECT_EQ(criticalCleared, 1);
+}
+
+TEST(FuelServiceTest, DoesNotClearCriticalWarningWhenFuelDoesNotRecover) {
     EventBus bus;
     FuelService service(bus, TestConfig());
     service.CheckFuelConsumptionChanged(2.0f);
     int cleared = 0;
     bus.subscribe<CriticalFuelWarningCleared>([&](const auto&) { ++cleared; });
     service.CheckFuelLevelChanged(5.0f);
-    service.CheckFuelLevelChanged(15.0f);
-    EXPECT_EQ(cleared, 1);
+    service.CheckCriticalFuelWarningCleared();
+    EXPECT_EQ(cleared, 0); 
+}
+
+TEST(FuelServiceTest, DoesNotClearCriticalWarningWhenStateIsNotCritical) {
+    EventBus bus;
+    FuelService service(bus, TestConfig());
+    service.CheckFuelLevelChanged(50.0f);
+    int cleared = 0;
+    bus.subscribe<CriticalFuelWarningCleared>([&](const auto&) { cleared++; });
+    service.CheckFuelLevelChanged(50.0f);
+    service.CheckCriticalFuelWarningCleared();
+    EXPECT_EQ(cleared, 0);
+}
+
+TEST(FuelServiceTest, ChecksCriticalFuelWarningIsNotRaisedWhenInCriticalFuelState) {
+    EventBus bus; 
+    FuelService service(bus, TestConfig());
+    service.CheckFuelLevelChanged(5.0);
+    int warnings = 0;
+    bus.subscribe<CriticalFuelWarningRaised>([&](const auto&) { warnings++; });
+    service.CheckCriticalFuelWarning(); 
+    EXPECT_EQ(warnings, 0);
 }
