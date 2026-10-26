@@ -10,10 +10,19 @@ include(FetchContent)
 FetchContent_Declare(
     spdlog
     GIT_REPOSITORY https://github.com/gabime/spdlog.git
-    GIT_TAG v1.15.3
+    GIT_TAG v1.17.0
+)
+
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
 FetchContent_MakeAvailable(spdlog)
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
 
 add_executable(fuel_management_system 
     src/main.cpp 
@@ -24,8 +33,24 @@ add_executable(fuel_management_system
     src/fuel/fuel-service.cpp
     ) # assumes all cpp files are in a directory called `src`
 
+add_executable(afrm_unit_tests
+    tests/unit/test_event_bus.cpp
+    tests/unit/test_fuel_service.cpp
+    tests/unit/test_fuel_display_service.cpp
+    src/fuel/fuel-service.cpp
+    src/fuel-display/fuel-display-service.cpp
+    src/event-bus/event-bus.cpp
+) # testing executables
+
 target_include_directories(
     fuel_management_system
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/.config
+)
+
+target_include_directories(
+    afrm_unit_tests 
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/.config
@@ -40,4 +65,21 @@ target_compile_features( fuel_management_system PUBLIC cxx_std_26 ) # sets the C
 target_link_libraries(
     fuel_management_system
     PRIVATE spdlog::spdlog
+)
+
+target_link_libraries(afrm_unit_tests PRIVATE GTest::gtest_main spdlog::spdlog)
+
+include(GoogleTest)
+
+gtest_discover_tests(afrm_unit_tests)
+
+target_compile_options(afrm_unit_tests PRIVATE
+    -O0
+    -g
+    -fprofile-instr-generate
+    -fcoverage-mapping
+)
+
+target_link_options(afrm_unit_tests PRIVATE
+    -fprofile-instr-generate
 )
