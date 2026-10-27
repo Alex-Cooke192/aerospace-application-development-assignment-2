@@ -12,6 +12,10 @@ public:
     float GetFuelLevelData(float minimum, float maximum); 
     float GetFuelConsumptionData(float minimum, float maximum);
     void PrintData() override;
+
+    // Getter methods (no need for a setter as data should be produced within the sensor)
+    float GetFuelLevel() { return this->Fuel_Level; };
+    float GetFuelConsumption() { return this->Fuel_Consumption; };
 private:
     float Fuel_Level = 0.0;
     float Fuel_Consumption = 0.0;
