@@ -21,13 +21,16 @@ TEST(FuelSerivceToDisplayIntegrationTest, FuelLevelChangePrintsNewFuelLevel) {
     EventBus bus;
     FuelService service(bus, TestConfig());
     FuelDisplayService display(bus);
-    bus.subscribe<FuelLevelChanged>([&](const auto&) {} );
+    int eventCount = 0;
+    float testFuelLevel = 0.0; 
+    bus.subscribe<FuelLevelChanged>([&](const auto& event) { testFuelLevel = event.New_Fuel_Level; ++eventCount; } );
     std::ostringstream oss;
     auto* stringBuffer = std::cout.rdbuf(std::cout.rdbuf()); 
     std::cout.rdbuf(oss.rdbuf()); // Set buffer to output into oss buffer instead
     service.CheckFuelLevelChanged(40.0f);
     std::cout.rdbuf(stringBuffer); // reset to normal terminal output
-    EXPECT_NE(oss.str().find("40"), std::string::npos);
+    EXPECT_EQ(testFuelLevel, 40.0); // Verifies calculation
+    EXPECT_NE(oss.str().find("40"), std::string::npos); // Verifies terminal display output
 }
 
 TEST(FuelSerivceToDisplayIntegrationTest, FuelConsumptionChangePrintsNewFuelRange) {
@@ -37,15 +40,18 @@ TEST(FuelSerivceToDisplayIntegrationTest, FuelConsumptionChangePrintsNewFuelRang
     service.CheckAirSpeedChanged(150.0f);
     service.CheckFuelLevelChanged(100.0f);
     service.CheckFuelConsumptionChanged(0.03f);
-    bus.subscribe<FuelConsumptionChanged>([&](const auto&) {} );
+    int eventCount = 0;
+    float testFuelRange = 0.0;
+    bus.subscribe<FuelRangeChanged>([&](const auto& event) { testFuelRange = event.New_Fuel_Range; ++eventCount; });
     std::ostringstream oss;
     auto* stringBuffer = std::cout.rdbuf(std::cout.rdbuf());
     std::cout.rdbuf(oss.rdbuf()); // Set buffer to output into oss buffer instead
     service.SetFuelRangeFlag(false);
     service.CheckFuelConsumptionChanged(0.01f);
     std::cout.rdbuf(stringBuffer); // reset to normal terminal output
-    EXPECT_NE(oss.str().find("RANGE"), std::string::npos);
-    // EXPECT_FLOAT_EQ(oss.str().find("1500000.0"), std::string::npos); // Checks correct calculation
+    EXPECT_NE(oss.str().find("RANGE"), std::string::npos); // Verifies terminal output
+    EXPECT_EQ(eventCount, 1);
+    EXPECT_EQ(testFuelRange, 1500000.0); // Verifies calculation
 }
 
 TEST(FuelServiceToDisplayIntegrationTest, AirSpeedChangedPrintsNewFuelRange) {
@@ -55,16 +61,18 @@ TEST(FuelServiceToDisplayIntegrationTest, AirSpeedChangedPrintsNewFuelRange) {
     service.CheckFuelConsumptionChanged(0.01f);
     service.CheckFuelLevelChanged(100.0f);
     service.CheckAirSpeedChanged(200.0f);
-    bus.subscribe<AirSpeedChanged>([&](const auto&) {} );
+    int eventCount = 0;
+    float testFuelRange = 0.0; // Must be declared here so can be seen by EXPECT_EQ lines
+    bus.subscribe<FuelRangeChanged>([&](const auto& event) { testFuelRange = event.New_Fuel_Range; ++eventCount; });
     std::ostringstream oss;
     auto* stringBuffer = std::cout.rdbuf(std::cout.rdbuf());
     std::cout.rdbuf(oss.rdbuf()); // Set buffer to output into oss buffer instead 
     service.SetFuelRangeFlag(false); 
     service.CheckAirSpeedChanged(150.0f);
-    std::cout << "TEST" << std::endl; 
     std::cout.rdbuf(stringBuffer); // reset to normal terminal output
-    EXPECT_NE(oss.str().find("RANGE"), std::string::npos);
-    // EXPECT_FLOAT_EQ(oss.str().find("1500000.0"), std::string::npos); // Checks correct calculation
+    EXPECT_NE(oss.str().find("RANGE"), std::string::npos); // erifies terminal output
+    EXPECT_EQ(eventCount, 1);
+    EXPECT_EQ(testFuelRange, 1500000.0); // Verifies calculation
 }
 
 TEST(FuelServiceToDisplayIntegrationTest, LowFuelLevelDisplaysLowFuelWarning) {
