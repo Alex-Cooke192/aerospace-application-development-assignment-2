@@ -11,6 +11,9 @@ public:
     int GetData() override;
     void GetAirSpeedData(float minimum, float maximum); 
     void PrintData() override;
+
+    // Getter method
+    float GetAirSpeed() { return this->Air_Speed; };
 private:
     float Air_Speed = 0.0;
     float Maximum_Air_Speed_Change = 5.0;
