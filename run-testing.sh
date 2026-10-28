@@ -1,6 +1,6 @@
-rm -rf build
+rm -rf build-macos
 
-cmake -S . -B build
-cmake --build build --target afrm_unit_tests
+cmake -S . -B build-macos
+cmake --build build-macos --target afrm_tests
 
-ctest --test-dir build --output-on-failure
+ctest --test-dir build-macos --output-on-failure
