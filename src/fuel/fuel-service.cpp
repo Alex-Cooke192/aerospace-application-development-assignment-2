@@ -73,6 +73,7 @@ void FuelService::UpdateAirSpeed(float New_Air_Speed) {
     float Original_Air_Speed = this->Air_Speed;
     this->Air_Speed = New_Air_Speed;
     bus.publish(AirSpeedChanged{Original_Air_Speed, New_Air_Speed});
+    UpdateFuelRange(this->Fuel_Level, this->Air_Speed, this->Fuel_Consumption);
 }
 
 // -----------------------------------------------------------------------------------
