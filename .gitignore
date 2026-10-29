@@ -2,6 +2,7 @@
 /build-linux
 /build-macos
 /build-coverage
+/build-coverage-debian
 /coverage-report
 /coverage-profiles
 /unit-coverage-profiles

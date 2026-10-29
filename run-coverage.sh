@@ -16,14 +16,14 @@ $(brew --prefix llvm)/bin/llvm-profdata merge \
   -o coverage.profdata
 
   $(brew --prefix llvm)/bin/llvm-cov report \
-  build-coverage/afrm_unit_tests \
+  build-coverage/afrm_tests \
   -instr-profile=coverage.profdata \
   -ignore-filename-regex='(/tests/|/build-coverage/|/googletest/|/spdlog/)'
 
-  $(brew --prefix llvm)/bin/llvm-cov show \
-  build-coverage/afrm_unit_tests \
+$(brew --prefix llvm)/bin/llvm-cov show \
+  build-coverage/afrm_tests \
   -instr-profile=coverage.profdata \
-  -ignore-filename-regex='(/tests/|/build-coverage/|/googletest/|/spdlog/)' \
+  -ignore-filename-regex='(/tests/|/build-coverage/|/googletest/|/spdlog/|/sitl-sensors/)' \
   -format=html \
   -show-branches=count \
   -output-dir=coverage-report
