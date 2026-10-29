@@ -33,7 +33,7 @@ add_executable(fuel_management_system
     src/fuel/fuel-service.cpp
     ) # assumes all cpp files are in a directory called `src`
 
-add_executable(afrm_unit_tests
+add_executable(afrm_tests
     tests/unit/test_event_bus.cpp
     tests/unit/test_fuel_service.cpp
     tests/unit/test_fuel_display_service.cpp
@@ -48,9 +48,8 @@ target_include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/.config
 )
-
 target_include_directories(
-    afrm_unit_tests 
+    afrm_tests 
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/.config
@@ -67,19 +66,19 @@ target_link_libraries(
     PRIVATE spdlog::spdlog
 )
 
-target_link_libraries(afrm_unit_tests PRIVATE GTest::gtest_main spdlog::spdlog)
+target_link_libraries(afrm_tests PRIVATE GTest::gtest_main spdlog::spdlog)
 
 include(GoogleTest)
 
-gtest_discover_tests(afrm_unit_tests)
+gtest_discover_tests(afrm_tests)
 
-target_compile_options(afrm_unit_tests PRIVATE
+target_compile_options(afrm_tests PRIVATE
     -O0
     -g
     -fprofile-instr-generate
     -fcoverage-mapping
 )
 
-target_link_options(afrm_unit_tests PRIVATE
+target_link_options(afrm_tests PRIVATE
     -fprofile-instr-generate
 )
