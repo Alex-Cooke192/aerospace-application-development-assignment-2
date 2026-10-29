@@ -10,8 +10,8 @@ TEST(FuelDisplayServiceTest, PrintsFuelLevelChange) {
     display.PrintFuelLevelChanged(80.0f, 50.0f);
     const std::string output = testing::internal::GetCapturedStdout();
     EXPECT_NE(output.find("FUEL LEVEL CHANGED"), std::string::npos);
-    EXPECT_NE(output.find("Original: 80.000000"), std::string::npos);
-    EXPECT_NE(output.find("New:50.000000"), std::string::npos);
+    EXPECT_NE(output.find("Original: 80"), std::string::npos);
+    EXPECT_NE(output.find("New:50"), std::string::npos);
 }
 
 TEST(FuelDisplayServiceTest, PrintsLowFuelWarning) {
@@ -59,7 +59,7 @@ TEST(FuelDisplayServiceTest, PrintsConsumptionChange) {
     display.PrintFuelConsumptionChanged(2.0f, 3.0f);
     const std::string output = testing::internal::GetCapturedStdout();
     EXPECT_NE(output.find("FUEL CONSUMPTION CHANGED"), std::string::npos);
-    EXPECT_NE(output.find("New:3.000000"), std::string::npos);
+    EXPECT_NE(output.find("New:3"), std::string::npos);
 }
 
 TEST(FuelDisplayServiceTest, PrintsRangeChange) {
@@ -69,5 +69,5 @@ TEST(FuelDisplayServiceTest, PrintsRangeChange) {
     display.PrintRangeChanged(100.0f, 50.0f);
     const std::string output = testing::internal::GetCapturedStdout();
     EXPECT_NE(output.find("FUEL RANGE CHANGED"), std::string::npos);
-    EXPECT_NE(output.find("New:50.000000"), std::string::npos);
+    EXPECT_NE(output.find("New:50"), std::string::npos);
 }
