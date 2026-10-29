@@ -77,13 +77,25 @@ include(GoogleTest)
 
 gtest_discover_tests(afrm_tests)
 
-target_compile_options(afrm_tests PRIVATE
-    -O0
-    -g
-    -fprofile-instr-generate
-    -fcoverage-mapping
-)
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_options(afrm_tests PRIVATE
+        -O0
+        -g
+        -fprofile-instr-generate
+        -fcoverage-mapping
+    )
 
-target_link_options(afrm_tests PRIVATE
-    -fprofile-instr-generate
-)
+    target_link_options(afrm_tests PRIVATE
+        -fprofile-instr-generate
+    )
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GCC")
+    target_compile_options(afrm_tests PRIVATE
+        -O0
+        -g
+        --coverage
+    )
+
+    target_link_options(afrm_tests PRIVATE
+        --coverage
+    )
+endif()
