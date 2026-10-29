@@ -1,8 +1,12 @@
+/build
 /build-linux
 /build-macos
 /build-coverage
 /coverage-report
 /coverage-profiles
+/unit-coverage-profiles
+/unit-coverage-report
+/build-unit-coverage
 /.vscode
 
 #coverage report profiles
