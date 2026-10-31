@@ -1,8 +1,8 @@
 #include <string>
 #include <vector>
-#include <src/event-bus/event-bus.h>
-#include <src/event-bus/events.h>
-#include ".config/aircraft-configuration.h"
+#include <event-bus/event-bus.h>
+#include <event-bus/events.h>
+#include "aircraft-configuration.h"
 #include <optional>
 
 
@@ -22,7 +22,9 @@ class SensorProcessingService {
     std::optional<float> AirSpeedSensorVote(const std::vector<float>& readings);
 
     // Fuse valid data
-    void FuseSensorData();
+    float FuseFuelLevelSensorData(const std::vector<float>& readings);
+    float FuseFuelConsumptionSensorData(const std::vector<float>& readings);
+    float FuseAirSpeedSensorData(const std::vector<float>& readings);
 
     private:
     EventBus& eventBus;

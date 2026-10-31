@@ -3,9 +3,9 @@
 #include <cmath>
 #include <optional>
 #include <algorithm>
-#include "src/sensor-processing/sensor-processing-service.h"
-#include "src/event-bus/events.h"
-#include "src/event-bus/event-bus.h"
+#include "sensor-processing/sensor-processing-service.h"
+#include "event-bus/events.h"
+#include "event-bus/event-bus.h"
 
 
 SensorProcessingService::SensorProcessingService(EventBus& bus, AircraftConfiguration aircraftConfiguration) : eventBus(bus), aircraftConfiguration(aircraftConfiguration) {
@@ -106,3 +106,85 @@ void SensorProcessingService::VerifyRawAirSpeedData(
 
     AirSpeedSensorVote(verifiedAirSpeeds);
 }
+
+// Fuel level voting
+std::optional<float> SensorProcessingService::FuelLevelSensorVote(
+    const std::vector<float>& readings)
+{
+    const float tolerance =
+        aircraftConfiguration.fuelMetrics.fuel_capacity *
+        aircraftConfiguration.sensorMetrics.fuel_sensor_variability;
+
+    if (readings.size() < 3) return std::nullopt;
+
+    std::vector<float> sorted = readings;
+    std::sort(sorted.begin(), sorted.end());
+
+    for (size_t i = 0; i + 2 < sorted.size(); i++) {
+        if (sorted[i + 2] - sorted[i] <= tolerance) {
+            std::vector<float> accepted = {
+                sorted[i], sorted[i + 1], sorted[i + 2]
+            };
+            
+            return FuseAirSpeedSensorData(accepted);
+        }
+    }
+
+    return std::nullopt;
+}
+
+
+// Fuel consumption voting
+std::optional<float> SensorProcessingService::FuelConsumptionSensorVote(
+    const std::vector<float>& readings)
+{
+    const float tolerance =
+        aircraftConfiguration.fuelMetrics.fuel_consumption_maximum *
+        aircraftConfiguration.sensorMetrics.fuel_sensor_variability;
+
+    if (readings.size() < 3) return std::nullopt;
+
+    std::vector<float> sorted = readings;
+    std::sort(sorted.begin(), sorted.end());
+
+    for (size_t i = 0; i + 2 < sorted.size(); i++) {
+        if (sorted[i + 2] - sorted[i] <= tolerance) {
+            std::vector<float> accepted = {
+                sorted[i], sorted[i + 1], sorted[i + 2]
+            };
+            
+            return FuseAirSpeedSensorData(accepted);
+        }
+    }
+
+    return std::nullopt;
+}
+
+
+// Airspeed voting
+std::optional<float> SensorProcessingService::AirSpeedSensorVote(
+    const std::vector<float>& readings)
+{
+    const float tolerance =
+        aircraftConfiguration.airspeeds.maximum_airspeed *
+        aircraftConfiguration.sensorMetrics.air_speed_sensor_variability;
+
+    if (readings.size() < 3) return std::nullopt;
+
+    std::vector<float> sorted = readings;
+    std::sort(sorted.begin(), sorted.end());
+
+    for (size_t i = 0; i + 2 < sorted.size(); i++) {
+        if (sorted[i + 2] - sorted[i] <= tolerance) {
+            std::vector<float> accepted = {
+                sorted[i], sorted[i + 1], sorted[i + 2]
+            };
+
+            return FuseAirSpeedSensorData(accepted);
+        }
+    }
+    return std::nullopt;
+}
+
+
+
