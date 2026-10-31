@@ -14,22 +14,22 @@ FuelService::FuelService(EventBus& bus, AircraftConfiguration aircraftConfig) : 
 // Subscriptions to other services
 void FuelService::Subscribe() { 
     // Listen for new sensor outputs from the sensors
-    bus.subscribe<NewFuelLevelSensorOutput>(
-        [this](const NewFuelLevelSensorOutput& event)
+    bus.subscribe<ValidatedFuelLevelOutput>(
+        [this](const ValidatedFuelLevelOutput& event)
         {
-            this->CheckFuelLevelChanged(event.Output_Fuel_Level); 
+            this->CheckFuelLevelChanged(event.Valid_Fuel_Level); 
         }
     );
-    bus.subscribe<NewFuelConsumptionSensorOutput>(
-        [this](const NewFuelConsumptionSensorOutput& event)
+    bus.subscribe<ValidatedFuelConsumptionOutput>(
+        [this](const ValidatedFuelConsumptionOutput& event)
         {
-            this->CheckFuelConsumptionChanged(event.Output_Fuel_Consumption);
+            this->CheckFuelConsumptionChanged(event.Valid_Fuel_Consumption);
         }
     );
-    bus.subscribe<NewAirSpeedSensorOutput>(
-        [this](const NewAirSpeedSensorOutput& event)
+    bus.subscribe<ValidatedAirSpeedOutput>(
+        [this](const ValidatedAirSpeedOutput& event)
         {
-            this->CheckAirSpeedChanged(event.Output_Airspeed);
+            this->CheckAirSpeedChanged(event.Valid_Air_Speed);
         }
     );
 }
