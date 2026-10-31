@@ -126,7 +126,9 @@ std::optional<float> SensorProcessingService::FuelLevelSensorVote(
                 sorted[i], sorted[i + 1], sorted[i + 2]
             };
             
-            return FuseAirSpeedSensorData(accepted);
+            float validFuelLevel = FuseFuelLevelSensorData(accepted);
+            ValidatedFuelLevelOutput validFuelLevelEvent = {validFuelLevel};
+            eventBus.publish<ValidatedFuelLevelOutput>(validFuelLevelEvent);
         }
     }
 
@@ -153,7 +155,9 @@ std::optional<float> SensorProcessingService::FuelConsumptionSensorVote(
                 sorted[i], sorted[i + 1], sorted[i + 2]
             };
             
-            return FuseAirSpeedSensorData(accepted);
+            float validFuelConsumption = FuseFuelConsumptionSensorData(accepted);
+            ValidatedFuelConsumptionOutput validFuelConsumptionEvent = {validFuelConsumption};
+            eventBus.publish<ValidatedFuelConsumptionOutput>(validFuelConsumptionEvent);
         }
     }
 
@@ -180,11 +184,24 @@ std::optional<float> SensorProcessingService::AirSpeedSensorVote(
                 sorted[i], sorted[i + 1], sorted[i + 2]
             };
 
+            float validAirSpeed = FuseAirSpeedSensorData(accepted);
+            ValidatedAirSpeedOutput validAirSpeedEvent = {validAirSpeed};
+            eventBus.publish<ValidatedAirSpeedOutput>(validAirSpeedEvent);
             return FuseAirSpeedSensorData(accepted);
         }
     }
     return std::nullopt;
 }
 
+float SensorProcessingService::FuseFuelLevelSensorData(const std::vector<float>& readings) {
+    return readings[1];
+}
 
+float SensorProcessingService::FuseFuelConsumptionSensorData(const std::vector<float>& readings) {
+    return readings[1];
+}
+
+float SensorProcessingService::FuseAirSpeedSensorData(const std::vector<float>& readings) {
+    return readings[1];
+}
 
