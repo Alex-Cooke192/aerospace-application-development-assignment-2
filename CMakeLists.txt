@@ -47,6 +47,40 @@ add_executable(afrm_tests
     src/event-bus/event-bus.cpp
 ) # testing executables
 
+add_executable(afrm_integration_tests
+    tests/integration/test_fuelService_to_fuelDisplay.cpp
+    tests/integration/test_sensor_to_fuelService.cpp
+    src/sitl-sensors/air-speed-sensor.cpp
+    src/sitl-sensors/fuel-sensor.cpp
+    src/fuel/fuel-service.cpp
+    src/fuel-display/fuel-display-service.cpp
+    src/event-bus/event-bus.cpp
+)
+
+add_executable(afrm_unit_and_integration_tests
+    tests/integration/test_fuelService_to_fuelDisplay.cpp
+    tests/integration/test_sensor_to_fuelService.cpp
+    tests/unit/test_event_bus.cpp
+    tests/unit/test_fuel_service.cpp
+    tests/unit/test_fuel_display_service.cpp
+    src/sitl-sensors/air-speed-sensor.cpp
+    src/sitl-sensors/fuel-sensor.cpp
+    src/fuel/fuel-service.cpp
+    src/fuel-display/fuel-display-service.cpp
+    src/event-bus/event-bus.cpp
+)
+
+add_executable(afrm_unit_tests
+    tests/unit/test_event_bus.cpp
+    tests/unit/test_fuel_service.cpp
+    tests/unit/test_fuel_display_service.cpp
+    src/sitl-sensors/air-speed-sensor.cpp
+    src/sitl-sensors/fuel-sensor.cpp
+    src/fuel/fuel-service.cpp
+    src/fuel-display/fuel-display-service.cpp
+    src/event-bus/event-bus.cpp
+)
+
 target_include_directories(
     fuel_management_system
     PRIVATE
@@ -56,6 +90,21 @@ target_include_directories(
 target_include_directories(
     afrm_tests 
     PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/.config
+)
+
+target_include_directories(afrm_unit_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/.config
+)
+
+target_include_directories(afrm_integration_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/.config
+)
+
+target_include_directories(afrm_unit_and_integration_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/.config
 )
@@ -72,30 +121,38 @@ target_link_libraries(
 )
 
 target_link_libraries(afrm_tests PRIVATE GTest::gtest_main spdlog::spdlog)
+target_link_libraries(afrm_unit_tests PRIVATE GTest::gtest_main spdlog::spdlog)
+target_link_libraries(afrm_integration_tests PRIVATE GTest::gtest_main spdlog::spdlog)
+target_link_libraries(afrm_unit_and_integration_tests PRIVATE GTest::gtest_main spdlog::spdlog)
 
 include(GoogleTest)
 
 gtest_discover_tests(afrm_tests)
+gtest_discover_tests(afrm_unit_tests TEST_PREFIX "unit.")
+gtest_discover_tests(afrm_integration_tests TEST_PREFIX "integration.")
+gtest_discover_tests(afrm_unit_and_integration_tests TEST_PREFIX "combined.")
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_options(afrm_tests PRIVATE
+    target_compile_options(afrm_unit_and_integration_tests PRIVATE
         -O0
         -g
         -fprofile-instr-generate
         -fcoverage-mapping
     )
 
-    target_link_options(afrm_tests PRIVATE
+    target_link_options(afrm_unit_and_integration_tests PRIVATE
         -fprofile-instr-generate
     )
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GCC")
-    target_compile_options(afrm_tests PRIVATE
+
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(afrm_unit_and_integration_tests PRIVATE
         -O0
         -g
         --coverage
     )
 
-    target_link_options(afrm_tests PRIVATE
+    target_link_options(afrm_unit_and_integration_tests PRIVATE
         --coverage
     )
 endif()
+
