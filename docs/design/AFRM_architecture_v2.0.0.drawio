@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Page-1" id="xQKqu8Vzo6t_s1xzz0g0">
-    <mxGraphModel dx="2313" dy="1022" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2245" dy="976" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -44,10 +44,10 @@
           <mxGeometry height="30" width="200" x="260" y="375" as="geometry" />
         </mxCell>
         <mxCell id="VB4K4JG20963Kw8_owZv-26" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="" vertex="1">
-          <mxGeometry height="660" width="280" x="900" y="60" as="geometry" />
+          <mxGeometry height="660" width="350" x="900" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="VB4K4JG20963Kw8_owZv-27" parent="1" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Events&lt;/h1&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Sensor Events&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;NewFuelLevelSensorOutput {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;NewFuelConsumptionSensorOutput {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;NewAirSpeedSensorOutput {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Fuel Events&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;FuelLevelChanged {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;FuelConsumptionChanged {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;AirSpeedChanged {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;FuelRangeChanged {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Warning Events&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;LowFuelWarningRaised {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;LowFuelWarningCleared {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;CriticalFuelWarningRaised {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;CriticalFuelWarningCleared {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="590" width="260" x="910" y="90" as="geometry" />
+        <mxCell id="VB4K4JG20963Kw8_owZv-27" parent="1" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Events&lt;/h1&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Sensor Events&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;NewFuelLevelSensorOutput {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;NewFuelConsumptionSensorOutput {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;NewAirSpeedSensorOutput {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;NewValidatedFuelLevelOutput {}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;NewValidatedFuelConsumptionOutput {}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;NewValidatedAirSpeedOutput {}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Fuel Events&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;FuelLevelChanged {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;FuelConsumptionChanged {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;AirSpeedChanged {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;FuelRangeChanged {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Warning Events&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;LowFuelWarningRaised {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;LowFuelWarningCleared {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;CriticalFuelWarningRaised {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;CriticalFuelWarningCleared {}&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="590" width="340" x="910" y="90" as="geometry" />
         </mxCell>
         <mxCell id="VB4K4JG20963Kw8_owZv-36" edge="1" parent="1" source="VB4K4JG20963Kw8_owZv-13" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=0.954;exitY=0.294;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitPerimeter=0;" target="VB4K4JG20963Kw8_owZv-12" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
@@ -114,6 +114,33 @@
         </mxCell>
         <mxCell id="VB4K4JG20963Kw8_owZv-51" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;ul&gt;&lt;li&gt;Output fuel level / consumption sensor data&lt;/li&gt;&lt;/ul&gt;" vertex="1">
           <mxGeometry height="86.1" width="120" x="673" y="266.9" as="geometry" />
+        </mxCell>
+        <mxCell id="VB4K4JG20963Kw8_owZv-53" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="" vertex="1">
+          <mxGeometry height="160" width="240" x="593" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="VB4K4JG20963Kw8_owZv-54" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=19;" value="Sensor Processing Service" vertex="1">
+          <mxGeometry height="30" width="227" x="600" y="497" as="geometry" />
+        </mxCell>
+        <mxCell id="VB4K4JG20963Kw8_owZv-55" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;ul&gt;&lt;li&gt;Receives sensor outputs&lt;/li&gt;&lt;li&gt;Completes voting logic &amp;amp; data fusion&lt;/li&gt;&lt;li&gt;Identifies erroneous sensor outputs&lt;/li&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="100" width="240" x="593" y="531" as="geometry" />
+        </mxCell>
+        <mxCell id="VB4K4JG20963Kw8_owZv-56" edge="1" parent="1" source="VB4K4JG20963Kw8_owZv-53" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=0;exitY=0.046;exitDx=0;exitDy=0;entryX=0.973;entryY=0.663;entryDx=0;entryDy=0;entryPerimeter=0;" target="VB4K4JG20963Kw8_owZv-13" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="614" y="320" as="sourcePoint" />
+            <mxPoint x="510" y="356" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VB4K4JG20963Kw8_owZv-57" edge="1" parent="1" source="VB4K4JG20963Kw8_owZv-55" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=0.903;entryY=0.786;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=classic;startFill=1;endFill=0;" target="VB4K4JG20963Kw8_owZv-13" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="530" y="361" as="sourcePoint" />
+            <mxPoint x="621" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VB4K4JG20963Kw8_owZv-58" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="publish()" vertex="1">
+          <mxGeometry height="30" width="60" x="467" y="476" as="geometry" />
+        </mxCell>
+        <mxCell id="VB4K4JG20963Kw8_owZv-59" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="subscribe()" vertex="1">
+          <mxGeometry height="30" width="60" x="530" y="430" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
