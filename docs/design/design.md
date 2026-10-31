@@ -1,0 +1,1 @@
+[View Architecture Diagram](./AFRM_architecture_v1.0.0.drawio)
