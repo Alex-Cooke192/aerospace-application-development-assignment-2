@@ -17,36 +17,54 @@ int FuelSensor::GetData() {
     return 0;
 }
 
-float FuelSensor::GetFuelLevelData(float minimum, float maximum) {
-    if (this->Fuel_Level== 0.0) {
-        // Generate a random fuel level between the minimum and maximum values
-        this->Fuel_Level = minimum + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (maximum - minimum)));
+void FuelSensor::GetFuelLevelData(float minimum, float maximum) {
+    NewFuelLevelSensorOutput newFuelLevelSensorOutput;
+    if (Fuel_Level == 0.0f) {
+        Fuel_Level = minimum +
+            static_cast<float>(rand()) / RAND_MAX *
+            (maximum - minimum);
     } else {
-        // Airspeed already set so use that to form the new value
-        float Fuel_Level_Diff = this->_Fuel_Variance*(minimum + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (maximum - minimum))));
-        if (Fuel_Level_Diff > this->_Maximum_Fuel_Level_Change) {
-            Fuel_Level_Diff = _Maximum_Fuel_Level_Change;
-        }
-        // Either add or subtract the difference
-        static std::random_device rd;
-        static std::mt19937 gen(rd());
-        static std::bernoulli_distribution dist(0.05); // 95% chance of fuel value going down - alot more likely! 
-
-        if (dist(gen)) {
-            this->Fuel_Level = this->Fuel_Level+Fuel_Level_Diff;
-        } else {
-            this->Fuel_Level = this->Fuel_Level-Fuel_Level_Diff;
-        }
+        Fuel_Level -= _Maximum_Fuel_Level_Change;
     }
-    bus.publish(NewFuelLevelSensorOutput{this->Fuel_Level});
-    return Fuel_Level;
+
+    Fuel_Level = std::clamp(Fuel_Level, minimum, maximum);
+
+    // Simulate five sensors which are approximated around the initial value
+    for (int i = 0; i < 5; i++) {
+        float noise =
+            (static_cast<float>(rand()) / RAND_MAX * 2.0f - 1.0f)
+            * _Fuel_Variance * Fuel_Level;
+
+        newFuelLevelSensorOutput.Output_Fuel_Level[i] =
+            std::clamp(Fuel_Level + noise, minimum, maximum);
+    }
+
+    bus.publish(newFuelLevelSensorOutput);
 }
 
-float FuelSensor::GetFuelConsumptionData(float minimum, float maximum) {
+void FuelSensor::GetFuelConsumptionData(float minimum, float maximum) {
+    NewFuelConsumptionSensorOutput newFuelConsumptionSensorOutput;
+    if (Fuel_Consumption == 0.0f) {
+        Fuel_Consumption = minimum +
+            static_cast<float>(rand()) / RAND_MAX *
+            (maximum - minimum);
+    } else {
+        Fuel_Consumption -= _Fuel_Consumption_Maximum_Change;
+    }
 
-    float fuelConsumption = minimum + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (maximum - minimum)));
-    bus.publish(NewFuelConsumptionSensorOutput{fuelConsumption});
-    return fuelConsumption; 
+    Fuel_Consumption = std::clamp(Fuel_Consumption, minimum, maximum);
+
+    // Simulate five sensors which are approximated around the initial value
+    for (int i = 0; i < 5; i++) {
+        float noise =
+            (static_cast<float>(rand()) / RAND_MAX * 2.0f - 1.0f)
+            * _Fuel_Consumption_Variance * Fuel_Consumption;
+
+        newFuelConsumptionSensorOutput.Output_Fuel_Consumption[i] =
+            std::clamp(Fuel_Consumption + noise, minimum, maximum);
+    }
+
+    bus.publish(newFuelConsumptionSensorOutput);
 }
 
 void FuelSensor::PrintData() {

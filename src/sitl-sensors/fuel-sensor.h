@@ -9,8 +9,8 @@ public:
     FuelSensor(EventBus& bus, AircraftConfiguration aircraftConfig);
     int GetData() override;
 
-    float GetFuelLevelData(float minimum, float maximum); 
-    float GetFuelConsumptionData(float minimum, float maximum);
+    void GetFuelLevelData(float minimum, float maximum); 
+    void GetFuelConsumptionData(float minimum, float maximum);
     void PrintData() override;
 
     // Getter methods (no need for a setter as data should be produced within the sensor)
@@ -25,5 +25,7 @@ private:
     float _Fuel_Level_Minimum = 0.0; // Default Value: Kg
     float _Fuel_Level_Maximum = 100.0; // Default Value: Kg
     float _Fuel_Consumption_Minimum = 0.0; // Default Value: Kg per second
-    float _Fuel_Consumption_Maximum = 1.0; // Default value: Kg per second 
+    float _Fuel_Consumption_Maximum = 1.0; // Default value: Kg per second
+    float _Fuel_Consumption_Variance = 0.0005;
+    float _Fuel_Consumption_Maximum_Change = 0.005;
 };
