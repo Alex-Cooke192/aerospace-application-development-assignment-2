@@ -31,6 +31,7 @@ add_executable(fuel_management_system
     src/event-bus/event-bus.cpp
     src/fuel-display/fuel-display-service.cpp
     src/fuel/fuel-service.cpp
+    src/sensor-processing/sensor-processing-service.cpp
     ) # assumes all cpp files are in a directory called `src`
 
 add_executable(afrm_tests
@@ -38,28 +39,34 @@ add_executable(afrm_tests
     tests/unit/test_fuel_service.cpp
     tests/unit/test_fuel_display_service.cpp
     tests/integration/test_fuelService_to_fuelDisplay.cpp
-    tests/integration/test_sensor_to_fuelService.cpp
+    tests/integration/test_sensorProcessing_to_fuelService.cpp
+    tests/integration/test_sensor_to_sensorProcessing.cpp
     tests/end_to_end_integration_tests.cpp
+    tests/end_to_end_integration_test_data.h
     src/sitl-sensors/air-speed-sensor.cpp
     src/sitl-sensors/fuel-sensor.cpp
     src/fuel/fuel-service.cpp
     src/fuel-display/fuel-display-service.cpp
     src/event-bus/event-bus.cpp
+    src/sensor-processing/sensor-processing-service.cpp
 ) # testing executables
 
 add_executable(afrm_integration_tests
     tests/integration/test_fuelService_to_fuelDisplay.cpp
-    tests/integration/test_sensor_to_fuelService.cpp
+    tests/integration/test_sensorProcessing_to_fuelService.cpp
+    tests/integration/test_sensor_to_sensorProcessing.cpp
     src/sitl-sensors/air-speed-sensor.cpp
     src/sitl-sensors/fuel-sensor.cpp
     src/fuel/fuel-service.cpp
     src/fuel-display/fuel-display-service.cpp
     src/event-bus/event-bus.cpp
+    src/sensor-processing/sensor-processing-service.cpp
 )
 
 add_executable(afrm_unit_and_integration_tests
     tests/integration/test_fuelService_to_fuelDisplay.cpp
-    tests/integration/test_sensor_to_fuelService.cpp
+    tests/integration/test_sensorProcessing_to_fuelService.cpp
+    tests/integration/test_sensor_to_sensorProcessing.cpp
     tests/unit/test_event_bus.cpp
     tests/unit/test_fuel_service.cpp
     tests/unit/test_fuel_display_service.cpp
@@ -68,6 +75,7 @@ add_executable(afrm_unit_and_integration_tests
     src/fuel/fuel-service.cpp
     src/fuel-display/fuel-display-service.cpp
     src/event-bus/event-bus.cpp
+    src/sensor-processing/sensor-processing-service.cpp
 )
 
 add_executable(afrm_unit_tests
@@ -79,6 +87,7 @@ add_executable(afrm_unit_tests
     src/fuel/fuel-service.cpp
     src/fuel-display/fuel-display-service.cpp
     src/event-bus/event-bus.cpp
+    src/sensor-processing/sensor-processing-service.cpp
 )
 
 target_include_directories(
@@ -128,9 +137,9 @@ target_link_libraries(afrm_unit_and_integration_tests PRIVATE GTest::gtest_main 
 include(GoogleTest)
 
 gtest_discover_tests(afrm_tests)
-gtest_discover_tests(afrm_unit_tests TEST_PREFIX "unit.")
-gtest_discover_tests(afrm_integration_tests TEST_PREFIX "integration.")
-gtest_discover_tests(afrm_unit_and_integration_tests TEST_PREFIX "combined.")
+#gtest_discover_tests(afrm_unit_tests TEST_PREFIX "unit.")
+#gtest_discover_tests(afrm_integration_tests TEST_PREFIX "integration.")
+#gtest_discover_tests(afrm_unit_and_integration_tests TEST_PREFIX "combined.")
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(afrm_unit_and_integration_tests PRIVATE
