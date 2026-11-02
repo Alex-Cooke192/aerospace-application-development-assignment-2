@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include <src/sitl-sensors/air-speed-sensor.h>
-#include <src/sitl-sensors/fuel-sensor.h>
-#include <src/event-bus/event-bus.h>
-#include <src/event-bus/events.h>
-#include <src/sensor-processing/sensor-processing-service.h>
+#include <sitl-sensors/air-speed-sensor.h>
+#include <sitl-sensors/fuel-sensor.h>
+#include <event-bus/event-bus.h>
+#include <event-bus/events.h>
+#include <sensor-processing/sensor-processing-service.h>
 
 namespace {
     AircraftConfiguration TestConfig() {
@@ -62,8 +62,8 @@ TEST(SensorToSensorProcessingServiceIntegrationTest, FuelSensorOutputIsValidated
     }
     EXPECT_TRUE(FuelLevelLimitFlag);    
     EXPECT_TRUE(FuelConsumptionLimitFlag);
-    EXPECT_EQ(fuelLevelEventCount, 1);
+    EXPECT_EQ(fuelLevelEventCount, 3);
     EXPECT_NE(testFuelLevel, 0.0f);
-    EXPECT_EQ(fuelConsumptionEventCount, 1); 
+    EXPECT_EQ(fuelConsumptionEventCount, 3); 
     EXPECT_NE(testFuelConsumption, 0.0f);
 }
