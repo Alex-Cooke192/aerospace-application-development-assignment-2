@@ -3,7 +3,7 @@
 #include "event-bus/event-bus.h"
 #include "event-bus/events.h"
 #include "fuel/fuel-service.h"
-#include "src/sensor-processing/sensor-processing-service.h"
+#include "sensor-processing/sensor-processing-service.h"
 
 namespace {
 
@@ -85,8 +85,11 @@ TEST(SensorProcessingServiceToFuelServiceIntegrationTests, MultipleValidatedSens
     float inputFuelRange = (inputFuelLevel/inputFuelConsumption)*inputAirSpeed;
     // Run events
     bus.publish<ValidatedFuelLevelOutput>({inputFuelLevel});
+    service.SetFuelRangeFlag(false);
     bus.publish<ValidatedFuelConsumptionOutput>({inputFuelConsumption});
+    service.SetFuelRangeFlag(false);
     bus.publish<ValidatedAirSpeedOutput>({inputAirSpeed});
+    service.SetFuelRangeFlag(false);
     EXPECT_EQ(inputFuelLevel, testFuelLevel);
     EXPECT_EQ(inputFuelConsumption, testFuelConsumption);
     EXPECT_EQ(inputAirSpeed, testAirSpeed);
