@@ -5,18 +5,33 @@
 
 struct NewFuelLevelSensorOutput
 {
-    float Output_Fuel_Level;
+    float Output_Fuel_Level[5];
 };
 
 struct NewFuelConsumptionSensorOutput
 {
-    float Output_Fuel_Consumption;
+    float Output_Fuel_Consumption[5];
 };
 
 struct NewAirSpeedSensorOutput
 {
-    float Output_Airspeed;
-    float Original_Air_Speed;
+    float Output_Airspeed[5];
+    float Original_Air_Speed[5];
+};
+
+struct ValidatedFuelLevelOutput
+{
+    float Valid_Fuel_Level;
+};
+
+struct ValidatedFuelConsumptionOutput
+{
+    float Valid_Fuel_Consumption;
+};
+
+struct ValidatedAirSpeedOutput
+{
+    float Valid_Air_Speed;
 };
 
 struct FuelLevelChanged

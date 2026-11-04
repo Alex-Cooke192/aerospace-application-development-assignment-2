@@ -5,14 +5,20 @@
 TEST(EventBusTest, DeliversPublishedEvent) {
     EventBus bus;
     int calls = 0;
-    float received = -1.0f;
+    float testFuelLevels[5]; 
+    NewFuelLevelSensorOutput inputFuelLevels = {197.0f, 197.5f, 198.0f, 199.5f, 200.5f}; 
     bus.subscribe<NewFuelLevelSensorOutput>([&](const auto& event) {
-        ++calls;
-        received = event.Output_Fuel_Level;
+        for (int i=0;i<5;i++) {
+            ++calls;
+            testFuelLevels[i] = event.Output_Fuel_Level[i];
+        }
     });
-    bus.publish(NewFuelLevelSensorOutput{42.0f});
-    EXPECT_EQ(calls, 1);
-    EXPECT_FLOAT_EQ(received, 42.0f);
+    
+    bus.publish(NewFuelLevelSensorOutput{inputFuelLevels});
+    for (int j=0; j<5; j++) {
+        EXPECT_EQ(testFuelLevels[j], inputFuelLevels.Output_Fuel_Level[j]);
+    }
+    EXPECT_EQ(calls, 5);
 }
 
 TEST(EventBusTest, NotifiesAllSubscribers) {
