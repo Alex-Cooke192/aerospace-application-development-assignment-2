@@ -38,6 +38,7 @@ add_executable(afrm_tests
     tests/unit/test_event_bus.cpp
     tests/unit/test_fuel_service.cpp
     tests/unit/test_fuel_display_service.cpp
+    tests/unit/test_sensor_processing_service.cpp
     tests/integration/test_fuelService_to_fuelDisplay.cpp
     tests/integration/test_sensorProcessing_to_fuelService.cpp
     tests/integration/test_sensor_to_sensorProcessing.cpp
@@ -142,25 +143,25 @@ gtest_discover_tests(afrm_tests)
 #gtest_discover_tests(afrm_unit_and_integration_tests TEST_PREFIX "combined.")
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_options(afrm_unit_and_integration_tests PRIVATE
+    target_compile_options(afrm_tests PRIVATE
         -O0
         -g
         -fprofile-instr-generate
         -fcoverage-mapping
     )
 
-    target_link_options(afrm_unit_and_integration_tests PRIVATE
+    target_link_options(afrm_tests PRIVATE
         -fprofile-instr-generate
     )
 
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(afrm_unit_and_integration_tests PRIVATE
+    target_compile_options(afrm_tests PRIVATE
         -O0
         -g
         --coverage
     )
 
-    target_link_options(afrm_unit_and_integration_tests PRIVATE
+    target_link_options(afrm_tests PRIVATE
         --coverage
     )
 endif()
